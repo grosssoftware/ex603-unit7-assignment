@@ -1,1 +1,20 @@
-# before_plan.txt
+Limit  (cost=0.59..416.43 rows=50 width=154) (actual time=1.548..11.403 rows=50.00 loops=1)
+  Buffers: shared hit=7139 read=207
+  ->  Nested Loop  (cost=0.59..173838.15 rows=20902 width=154) (actual time=1.543..11.391 rows=50.00 loops=1)
+        Buffers: shared hit=7139 read=207
+        ->  Index Scan Backward using idx_plays_played_at on plays p  (cost=0.43..173311.67 rows=20902 width=12) (actual time=1.526..11.276 rows=50.00 loops=1)
+              Filter: (user_id = 1)
+              Rows Removed by Filter: 7233
+              Index Searches: 1
+              Buffers: shared hit=7099 read=207
+        ->  Memoize  (cost=0.16..0.18 rows=1 width=150) (actual time=0.002..0.002 rows=1.00 loops=50)
+              Cache Key: p.track_id
+              Cache Mode: logical
+              Hits: 30  Misses: 20  Evictions: 0  Overflows: 0  Memory Usage: 3kB
+              Buffers: shared hit=40
+              ->  Index Scan using songs_pkey on songs s  (cost=0.15..0.17 rows=1 width=150) (actual time=0.002..0.002 rows=1.00 loops=20)
+                    Index Cond: (song_id = p.track_id)
+                    Index Searches: 20
+                    Buffers: shared hit=40
+Planning Time: 0.241 ms
+Execution Time: 11.476 ms
